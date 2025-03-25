@@ -24,7 +24,7 @@ jobs:
       - name: Deploy Frontend Container and Start It
         run: |
           ssh -o StrictHostKeyChecking=no -i ${{ secrets.SSH_PRIVATE_KEY }} sysadmin@cp24ssa2.sit.kmutt.ac.th << 'EOF'
-            cd /path/to/your/MedVista && \
+            cd /home/sysadmin/MedVista && \
             git pull && \
             npm install && \
             npm run build && \
