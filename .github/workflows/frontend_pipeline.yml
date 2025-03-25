@@ -13,20 +13,12 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Install Dependencies
-        run: |
-          npm install
-
-      - name: Build Frontend App
-        run: |
-          npm run build
-
       - name: Deploy Frontend Container and Start It
         run: |
           ssh -o StrictHostKeyChecking=no -i ${{ secrets.SSH_PRIVATE_KEY }} sysadmin@cp24ssa2.sit.kmutt.ac.th << 'EOF'
             cd /home/sysadmin/MedVista && \
             git pull && \
-            npm install && \
+            npm install -g serve && \
             npm run build && \
             docker-compose up -d --build frontend
           EOF
