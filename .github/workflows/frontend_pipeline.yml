@@ -20,10 +20,17 @@ jobs:
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key
           chmod 600 private_key
 
+      - name: Start SSH agent and add private key
+        run: |
+          eval $(ssh-agent -s)
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" | ssh-add -
+          mkdir -p ~/.ssh
+          ssh-keyscan -H cp24ssa2.sit.kmutt.ac.th >> ~/.ssh/known_hosts
+
       # Step 3: Deploy Frontend Container and Start It via SSH
       - name: Deploy Container and Start It
         run: |
-          ssh -o StrictHostKeyChecking=no -i private_key sysadmin@cp24ssa2.sit.kmutt.ac.th << 'EOF'
+          ssh -o StrictHostKeyChecking=no sysadmin@cp24ssa2.sit.kmutt.ac.th << 'EOF'
             cd /home/sysadmin/MedVista && \
             git pull && \
             npm install -g serve && \
