@@ -10,13 +10,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Step 1: Checkout the code
       - name: Checkout Repository
         uses: actions/checkout@v3
 
+      # Step 2: Create SSH key file from GitHub Secrets
+      - name: Create SSH key file
+        run: |
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key
+          chmod 600 private_key
+          cat private_key
+
+      # Step 3: Deploy Frontend and Start Containers
       - name: Deploy Frontend and Start Containers
         run: |
-          ssh -o StrictHostKeyChecking=no -i ${{ secrets.SSH_PRIVATE_KEY }} sysadmin@cp24ssa2.sit.kmutt.ac.th << 'EOF'
-            cd /path/to/your/frontend && \
+          ssh -o StrictHostKeyChecking=no -i private_key sysadmin@cp24ssa2.sit.kmutt.ac.th << 'EOF'
+            cd /home/sysadmin/MedVista && \
             git pull && \
             npm install && \
             npm run build && \
