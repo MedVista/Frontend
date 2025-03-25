@@ -1,0 +1,35 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+    
+}
+.datePicker {
+  visibility: hidden;
+  height: 0;
+  padding: 0;
+  width: 0;
+  position: absolute;
+}
+.ant-picker{
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  background-color: inherit;
+  border-radius: 0 !important; 
+  border-bottom: 1.5px solid ; 
+  outline: none;
+}
+.ant-picker-outlined:hover {
+   border-color: black; 
+  background-color: inherit;
+}
+.css-dojea5-MuiDateCalendar-root {
+  /* max-width: 450px !important;
+  max-height: 550px !important; */
+  height: 390px !important;
+}
+.toggle {
+  --tglbg: oklch(1 0 1);
+}
