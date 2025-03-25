@@ -24,9 +24,9 @@ jobs:
       - name: Deploy Container and Start It
         run: |
           ssh -o StrictHostKeyChecking=no -i private_key sysadmin@cp24ssa2.sit.kmutt.ac.th << 'EOF'
-            cd /home/sysadmin && \
+            cd /home/sysadmin/MedVista && \
             git pull && \
             npm install -g serve && \
             npm run build && \
-            docker-compose up -d --build
+            docker-compose up -d --build frontend
           EOF
