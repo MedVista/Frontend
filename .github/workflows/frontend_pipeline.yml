@@ -3,7 +3,7 @@ name: Frontend CI/CD Pipeline
 on:
   push:
     branches:
-      - main  # Trigger on main branch push
+      - main
 
 jobs:
   build-and-deploy:
@@ -24,7 +24,7 @@ jobs:
       - name: Deploy Frontend Container and Start It
         run: |
           ssh -o StrictHostKeyChecking=no -i ${{ secrets.SSH_PRIVATE_KEY }} sysadmin@cp24ssa2.sit.kmutt.ac.th << 'EOF'
-            cd /path/to/your/project && \
+            cd /path/to/your/MedVista && \
             git pull && \
             npm install && \
             npm run build && \
