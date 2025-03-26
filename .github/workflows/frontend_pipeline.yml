@@ -14,20 +14,30 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      # Step 2: Create SSH key file from GitHub Secrets
-      - name: Create SSH key file
+      - name: Install OpenVPN
         run: |
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key
-          chmod 600 private_key
-          cat private_key
-
-      # Step 3: Deploy Frontend and Start Containers
-      - name: Deploy Frontend and Start Containers
-        run: |
-          ssh -o StrictHostKeyChecking=no -i private_key sysadmin@cp24ssa2.sit.kmutt.ac.th << 'EOF'
-            cd /home/sysadmin/MedVista && \
-            git pull && \
-            npm install && \
-            npm run build && \
-            docker-compose up -d frontend
-          EOF
+          sudo apt update
+          sudo apt install -y openvpn openvpn-systemd-resolved
+      - name: Connect to VPN
+        uses: "kota65535/github-openvpn-connect-action@v2"
+        with:
+          config_file: .github/workflows/sitst-client.ovpn
+          username: ${{ secrets.OVPN_USERNAME }}
+          password: ${{ secrets.OVPN_PASSWORD }}
+      
+      - name: Install sshpass
+        run: sudo apt-get install -y sshpass
+      - name: Use SSH
+        uses: appleboy/ssh-action@v1.0.0
+        with: 
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            sshpass -p "$REMOTE_PASSWORD" ssh -t -o StrictHostKeyChecking=no -p 22 $REMOTE_USER@$REMOTE_HOST << 'EOF'          
+              cd /home/sysadmin/MedVista && \
+              git pull && \
+              npm install && \
+              npm run build && \
+              docker-compose up -d --build frontend
+            EOF
