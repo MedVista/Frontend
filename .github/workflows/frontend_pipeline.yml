@@ -27,17 +27,18 @@ jobs:
       
       - name: Install sshpass
         run: sudo apt-get install -y sshpass
-      - name: Use SSH
-        uses: appleboy/ssh-action@v1.0.0
-        with: 
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            sshpass -p "$REMOTE_PASSWORD" ssh -t -o StrictHostKeyChecking=no -p 22 $REMOTE_USER@$REMOTE_HOST << 'EOF'          
-              cd /home/sysadmin/MedVista && \
-              git pull && \
-              npm install && \
-              npm run build && \
-              docker-compose up -d --build frontend
-            EOF
+
+
+      - name: deploy-to-server
+        env:
+          REMOTE_PASSWORD: ${{ secrets.VM_PASSWORD }}
+          REMOTE_HOST: ${{ secrets.SSH_HOST }}
+          REMOTE_USER: ${{ secrets.SSH_USERNAME }}
+        run: |
+          sshpass -p "$REMOTE_PASSWORD" ssh -t -o StrictHostKeyChecking=no -p 22 $REMOTE_USER@$REMOTE_HOST << 'EOF'          
+            cd /home/sysadmin/MedVista && \
+            git pull && \
+            npm install && \
+            npm run build && \
+            docker-compose up -d --build frontend
+          EOF
