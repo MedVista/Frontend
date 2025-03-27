@@ -12,7 +12,7 @@ COPY ./package*.json ./
 RUN npm install
 RUN npm install -g serve
 # Copy the rest of the app source code
-COPY ./ ./
+COPY . .
 
 # Build the React app
 RUN npm run build
