@@ -11,3 +11,5 @@ services:
     environment:
       - NODE_ENV=production
     command: serve -s build
+    ports:
+      - "3000:3000"
