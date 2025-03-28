@@ -13,6 +13,8 @@ services:
     command: serve -s build
     ports:
       - "3000:3000"
+    networks:
+      - mynetwork
 
   reverseproxy:
     image: nginx:alpine
@@ -25,7 +27,15 @@ services:
     ports:
       - "80:80"
       - "443:443"
+    depends_on:
+      - frontend
+    networks:
+      - mynetwork
     #depends_on:
     #  - backend
     #  - frontend
     #  - meeting
+
+networks:
+  mynetwork:
+    driver: bridge
