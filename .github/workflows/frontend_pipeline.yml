@@ -40,7 +40,9 @@ jobs:
             git pull && \
             npm install && \
             npm run build && \
-            docker stop frontend && \
-            docker rm frontend && \
             docker-compose up -d --build frontend
           EOF
+
+
+# docker stop frontend && \
+# docker rm frontend && \
