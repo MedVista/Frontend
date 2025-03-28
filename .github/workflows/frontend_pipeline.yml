@@ -41,5 +41,5 @@ jobs:
             npm install && \
             npm run build && \
             docker-compose down && \
-            docker-compose up -d --build frontend
+            docker-compose up -d --build frontend medvista-reverseproxy-1
           EOF
