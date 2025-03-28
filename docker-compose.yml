@@ -11,25 +11,3 @@ services:
     environment:
       - NODE_ENV=production
     command: serve -s build
-
-  reverseproxy:
-    container_name: medvista-reverseproxy-1
-    image: nginx:alpine
-    volumes:
-      - /home/sysadmin/MedVista/config/default.conf:/etc/nginx/conf.d/default.conf
-      - /home/sysadmin/MedVista/config/nginx.conf:/etc/nginx/nginx.conf
-      - /home/sysadmin/MedVista/ssl/privkey.pem:/ssl/privkey.pem
-      - /home/sysadmin/MedVista/ssl/fullchain.pem:/ssl/fullchain.pem
-      - /home/sysadmin/MedVista/ssl/dhparam-2048.pem:/ssl/dhparam-2048.pem
-      #- ./config/default.conf:/etc/nginx/conf.d/default.conf
-      #- ./config/nginx.conf:/etc/nginx/nginx.conf
-      #- ./ssl/privkey.pem:/ssl/privkey.pem
-      #- ./ssl/fullchain.pem:/ssl/fullchain.pem
-      #- ./ssl/dhparam-2048.pem:/ssl/dhparam-2048.pem
-    ports:
-      - "80:80"
-      - "443:443"
-    #depends_on:
-    #  - backend
-    #  - frontend
-    #  - meeting
