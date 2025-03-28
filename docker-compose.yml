@@ -13,3 +13,19 @@ services:
     command: serve -s build
     ports:
       - "3000:3000"
+
+  reverseproxy:
+    image: nginx:alpine
+    volumes:
+      - /home/sysadmin/config/default.conf:/etc/nginx/conf.d/default.conf
+      - /home/sysadmin/config/nginx.conf:/etc/nginx/nginx.conf
+      - /home/sysadmin/ssl/privkey.pem:/ssl/privkey.pem
+      - /home/sysadmin/ssl/fullchain.pem:/ssl/fullchain.pem
+      - /home/sysadmin/ssl/dhparam-2048.pem:/ssl/dhparam-2048.pem
+    ports:
+      - "80:80"
+      - "443:443"
+    #depends_on:
+    #  - backend
+    #  - frontend
+    #  - meeting
